@@ -668,8 +668,10 @@ export default class Query<T = unknown> implements ICloneable {
      * Maximum rows count in the selection
      */
     protected _limit: number = undefined;
-
     /**
+     * Правила для объединения с другими запросами.
+     */
+    /*
      * Rules for union with another queries
      */
     protected _union: Array<Query<T>> = [];
