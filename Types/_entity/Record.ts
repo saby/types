@@ -608,6 +608,12 @@ export default class Record<T = any> extends mixin<
             return false;
         }
 
+        // Если isEqual вызывают до того как инцилизированы адптеры, то на данных не будут инцилизированы toJSON,
+        // это приводит к тому, что при серирализации не востанавливаются форматы
+        // и рекорды будут ошибочно признаны разными.
+        this._getRawDataAdapter();
+        to._getRawDataAdapter();
+
         const rawData = this._getRawData();
         const toRawData = to.getRawData(true);
 
