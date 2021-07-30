@@ -1104,6 +1104,25 @@ class RecordSet<
         }
     }
 
+    /**
+     * Возвращает признак, что изменено хотя бы одно поле, хотя бы в одном элементе.
+     * @example
+     * Проверим изменилось ли какое-нибудь поле:
+     * <pre>
+     *     import {RecordSet} from 'Types/collection';
+     *
+     *     const fruits = new RecordSet({
+     *         rawData: [
+     *             {name: 'Apple'},
+     *             {name: 'Banana'}
+     *         ]
+     *     });
+     *
+     *     fruits.isChanged(); //false
+     *     fruits.at[0].set('name', 'Kiwi');
+     *     fruits.isChanged(); //true
+     * </pre>
+     */
     isChanged(): boolean {
         let changed = false;
         const items = this._$items;
