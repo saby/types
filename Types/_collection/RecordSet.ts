@@ -194,7 +194,7 @@ class RecordSet<
      * <ul>
      *   <li>path - путь для "хлебных крошек", возвращается как {@link Types/_collection/RecordSet};</li>
      *   <li>results - строка итогов, возвращается как {@link Types/_entity/Record}. Подробнее о конфигурации списков для отображения строки итогов читайте в {@link https://wi.sbis.ru/doc/platform/developmentapl/interfacedev/components/list/list-settings/list-visual-display/results/ этом разделе};</li>
-     *   <li>more - Boolean - есть ли есть записи для подгрузки (используется для постраничной навигации).</li>
+     *   <li>more - Boolean - есть ли записи для подгрузки (используется для постраничной навигации).</li>
      * </ul>
      * @name Types/_collection/RecordSet#metaData
      * @see getMetaData
@@ -1285,7 +1285,7 @@ class RecordSet<
      * <ul>
      *   <li>path - путь для хлебных крошек, возвращается как {@link Types/_collection/RecordSet};</li>
      *   <li>results - строка итогов, возвращается как {@link Types/_entity/Record}. Подробнее о конфигурации списков для отображения строки итогов читайте в {@link https://wi.sbis.ru/doc/platform/developmentapl/interfacedev/components/list/list-settings/list-visual-display/results/ этом разделе};</li>
-     *   <li>more - Boolean - есть ли есть записи для подгрузки (используется для постраничной навигации).</li>
+     *   <li>more - Boolean - есть ли записи для подгрузки (используется для постраничной навигации).</li>
      * </ul>
      * @param meta Метаданные.
      * @see metaData
