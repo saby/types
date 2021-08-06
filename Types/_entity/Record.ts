@@ -28,6 +28,7 @@ import { register, create } from '../di';
 import { protect, mixin, deprecateExtend } from '../util';
 import { Map } from '../shim';
 import { ExtendDate, IExtendDateConstructor, EntityMarker } from '../_declarations';
+import { isEqual } from 'Types/object';
 
 /**
  * Свойство, хранящее кэш полей
@@ -622,7 +623,7 @@ export default class Record<T = any> extends mixin<
             return rawData.isEqual(toRawData);
         }
 
-        return JSON.stringify(rawData) === JSON.stringify(toRawData);
+        return isEqual(rawData, toRawData);
     }
 
     // endregion
