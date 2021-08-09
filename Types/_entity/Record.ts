@@ -356,7 +356,7 @@ export default class Record<T = any> extends mixin<
     protected _$cacheMode: CacheMode;
 
     /**
-     * @cfg {Boolean} Клонировать значения полей, поддерживающих интерфейс {@link Types/_entity/ICloneable}, и при вызове rejectChages восстанавливать клонированные значения.
+     * @cfg {Boolean} Клонировать значения полей, поддерживающих интерфейс {@link Types/_entity/ICloneable}, и при вызове {@link rejectChanges} восстанавливать клонированные значения.
      * @name Types/_entity/Record#cloneChanged
      * @see rejectChanges
      */
