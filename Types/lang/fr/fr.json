@@ -1,0 +1,13 @@
+{
+   "plural#octillion": "octillion|octillions",
+   "plural#septillion": "septillion|septillions",
+   "plural#nonillion": "nonillion|nonillions",
+   "plural#decillion": "décillion|décillions",
+   "plural#quintillion": "quintillion|quintillions",
+   "plural#sextillion": "sextillon|sextillons",
+   "plural#trillion": "mille milliards|billions",
+   "plural#quadrillion": "quadrillion|quadrillions",
+   "plural#million": "million|des millions",
+   "plural#billion": "milliard|des milliards",
+   "plural#thousand": "mille|milliers"
+}
