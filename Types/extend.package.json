@@ -1,0 +1,19 @@
+{
+  "include": [
+    "Types/chain",
+    "Types/collection",
+    "Types/di",
+    "Types/entity",
+    "Types/formatter",
+    "Types/function",
+    "Types/object",
+    "Types/parser",
+    "Types/shim",
+    "Types/source",
+    "Types/util",
+    "Types/promise",
+    "Types/deferred",
+    "Types/ParallelDeferred"
+  ],
+  "output": "online-superbundle.package.js"
+}
