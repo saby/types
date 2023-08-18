@@ -1,0 +1,13 @@
+{
+   "plural#million": "مليون|ملايين|ملايين",
+   "plural#billion": "مليار|المليارات|المليارات",
+   "plural#quintillion": "كوينتيليون|كوينتيليونز|كوينتيليونز",
+   "plural#quadrillion": "كوادريليون|كوادريليون|كوادريليون",
+   "plural#sextillion": "سكستليون|سكستيليونس|سكستيليونس",
+   "plural#octillion": "اوكتيليون|أوكتيلونات|أوكتيلونات",
+   "plural#trillion": "تريليون|تريليونات|تريليونات",
+   "plural#septillion": "سبتيليون|septillions|septillions",
+   "plural#decillion": "ديليون|ديسيليونات|ديسيليونات",
+   "plural#thousand": "ألف|بالآلاف|بالآلاف",
+   "plural#nonillion": "نونليون|نونيليون|نونيليون"
+}
