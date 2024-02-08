@@ -1,0 +1,41 @@
+{
+   "name": "saby-types",
+   "version": "24.1000.0",
+   "repository": {
+      "type": "git",
+      "url": "git@git.sbis.ru:saby/Types.git"
+   },
+   "license": "MIT",
+   "files": [
+      "index.ts",
+      "Types/*"
+   ],
+   "scripts": {
+      "build": "npm run build:install && npm run build:typescript && npm run build:app",
+      "build:install": "wasaby-cli loadProject",
+      "build:typescript": "wasaby-cli initTSEnv",
+      "build:app": "wasaby-cli buildProject --watcher",
+      "build:watch:fortest": "wasaby-cli buildProject --umd --watcher",
+      "start": "wasaby-cli runUnitTests --server",
+      "test": "wasaby-cli runUnitTests --NodeJS --report=console",
+      "test:pattern": "wasaby-cli runUnitTests --node --report=console --grep='ObjectMeta'",
+      "test:coverage": "wasaby-cli runUnitTests --NodeJS --coverage",
+      "update-cli-store": "wasaby-cli loadProject",
+      "lint": "eslint .",
+      "lint:fix": "eslint . --fix",
+      "lint:css": "stylelint \"**/*.{css,less}\"",
+      "lint:css:fix": "stylelint \"**/*.{css,less}\" --fix",
+      "prettier": "prettier --write .",
+      "prepare": "npm run update-cli-store && npm run build:typescript && wasaby-cli initGitHooks"
+   },
+   "wasaby-cli": {
+      "preCommitHooks": [
+         "Prettier",
+         "ESLint",
+         "Stylelint"
+      ]
+   },
+   "devDependencies": {
+      "wasaby-cli": "git+https://git.sbis.ru/saby/wasaby-cli.git#rc-24.1000"
+   }
+}
