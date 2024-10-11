@@ -1,0 +1,18 @@
+{
+   "plural#дециллион": "decillion|decillions",
+   "plural#нониллион": "nonillion|nonillions",
+   "plural#октиллион": "octillion|octillions",
+   "plural#септиллион": "septillion|septillions",
+   "plural#сикстиллион": "sextillion|sextillions",
+   "plural#квинтиллион": "quintillion|quintillions",
+   "plural#квадриллион": "quadrillion|quadrillions",
+   "plural#триллион": "trillion|trillions",
+   "plural#миллиард": "billion|billions",
+   "plural#миллион": "million|millions",
+   "plural#тысяча": "thousand|thousands",
+   "трлн": "trln",
+   "млрд": "bln",
+   "млн": "mln",
+   "тыс": "thnd",
+   "nan": "NaN"
+}
