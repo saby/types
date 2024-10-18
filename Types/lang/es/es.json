@@ -1,0 +1,21 @@
+{
+   "млрд": "bill.",
+   "трлн": "Tennesse.",
+   "млн": "millones.",
+   "тыс": "mil.",
+   "Today": "Hoy",
+   "Yesterday": "Ayer",
+   "plural#тысяча": "mil|miles|miles|miles",
+   "plural#миллион": "un millón|millón|millones|millón",
+   "plural#миллиард": "mil millones|mil millones|miles de millones|mil millones",
+   "plural#триллион": "billón|billón|billones|billón",
+   "plural#квадриллион": "cuatrillón|cuatrillón|billones|cuatrillón",
+   "plural#квинтиллион": "trillón|trillón|trillón|trillón",
+   "plural#сикстиллион": "seistillones|seistillones|seis millones|seistillones",
+   "plural#септиллион": "septillón|septillón|septillón|septillón",
+   "plural#октиллион": "octillón|octillón|octillón|octillón",
+   "plural#нониллион": "nomillón|nomillón|nomillones|nomillón",
+   "plural#дециллион": "decillón|decillón|decillones|decillón",
+   "minus": "menos",
+   "nan": "Yaya"
+}
