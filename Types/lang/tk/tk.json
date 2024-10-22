@@ -1,0 +1,21 @@
+{
+   "Today": "Şu günlikçe",
+   "Yesterday": "Düýn",
+   "plural#тысяча": "müň",
+   "plural#миллион": "million",
+   "plural#миллиард": "milliard",
+   "plural#триллион": "trillion",
+   "plural#квадриллион": "kwadrillion",
+   "plural#квинтиллион": "kwintillion",
+   "plural#сикстиллион": "altmyş",
+   "plural#септиллион": "septillion",
+   "plural#октиллион": "oktillion",
+   "plural#нониллион": "kwintillion",
+   "plural#дециллион": "milliard",
+   "трлн": "trln",
+   "млрд": "bln",
+   "млн": "mln",
+   "тыс": "müň",
+   "minus": "minus",
+   "nan": "san däl"
+}
