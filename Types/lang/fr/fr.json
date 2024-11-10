@@ -1,0 +1,21 @@
+{
+   "Today": "Aujourd'hui",
+   "Yesterday": "Hier",
+   "plural#тысяча": "mille|milliers",
+   "plural#миллион": "million|millions",
+   "plural#миллиард": "milliard|milliards",
+   "plural#триллион": "trillion|trillions",
+   "plural#квадриллион": "quadrillion|quadrillion",
+   "plural#квинтиллион": "quintillion|quintillion",
+   "plural#сикстиллион": "six milliards|six milliards",
+   "plural#септиллион": "septillion|septillion",
+   "plural#октиллион": "octillion|octillion",
+   "plural#нониллион": "nonillion|nonillion",
+   "plural#дециллион": "décillion|décillion",
+   "трлн": "trln",
+   "млрд": "mlrd",
+   "млн": "mln",
+   "тыс": "mil",
+   "minus": "moins",
+   "nan": "NaN"
+}

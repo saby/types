@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui_module for_cdn="0" id="b7223918-657c-4e3d-ac98-f302a52f248c" kaizen_zone="24e2c3ae-d8a2-4113-a7d9-03e243a583d5" name="Meta" package="Wasaby" required="1" responsible="Санников К.А." responsible_uuid="eaa71514-f494-4ba4-9655-83ec59b449ef" version="1.07">
+
+  <description>Механизмы описания метатипов</description>
+
+  <depends>
+    <module id="686f183d-0bcc-4732-b4e4-6016c2a67a0f" name="Types"/>
+    <module id="636177e5-4d75-44fa-9173-977dc90ff111" name="Env"/>
+    <module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application"/>
+    <module id="37e402f1-2fb0-4b73-81c5-113cf94dbf1c" name="WasabyLoader"/>
+  </depends>
+
+  <load_after/>
+
+  <parameters/>
+
+  <resources/>
+
+  <preload/>
+
+</ui_module>
