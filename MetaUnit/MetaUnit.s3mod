@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui_module id="6cb3e681-89ce-458e-8a51-d082ce428c11" name="MetaUnit" package="Wasaby" kaizen_zone="24e2c3ae-d8a2-4113-a7d9-03e243a583d5" required="1" version="1.00">
+
+  <description/>
+
+   <depends>
+      <module id="b7223918-657c-4e3d-ac98-f302a52f248c" name="Meta"/>
+   </depends>
+
+  <load_after/>
+
+  <test framework="Mocha" environment="NodeJS" />
+
+  <parameters/>
+
+  <resources/>
+
+  <preload/>
+
+  <typescript>
+    <arg key="typecheck" value="0"/>
+  </typescript>
+</ui_module>
