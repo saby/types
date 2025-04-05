@@ -1,0 +1,330 @@
+import IAbstract from './IAbstract';
+import { OptionsToPropertyMixin } from '../../entity';
+import { logger as defaultLogger, ILogger } from '../../util';
+import { constants } from 'Env/Env';
+import { IEndpoint } from '../IProvider';
+import { ICacheParameters, IProviderOptions } from '../Remote';
+import { EntityMarker } from 'Types/declarations';
+import { Deferred } from 'Types/deferred';
+import { ICallChainItem } from '../chainFactory/CallChainItem';
+
+/**
+ * Интерфейс транспорта удаленного вызова
+ * @public
+ */
+export interface IOptions extends IProviderOptions {
+    /**
+     * Таймаут вызова
+     */
+    callTimeout?: number;
+    /**
+     * Инстанс логгера для публикации диагностических сообщений
+     */
+    logger?: ILogger;
+    /**
+     * Конструктор внешнего транспорта
+     */
+    transport?: IRpcTransportConstructor;
+}
+
+/**
+ * Заголовки запроса
+ * @private
+ */
+export type RPCHeaders = Record<string, string>;
+
+/**
+ * Интерфейс транспорта, реализующего IRPC
+ * @public
+ */
+export interface IRpcTransport {
+    /**
+     * Вызов удаленного метода
+     * @param method
+     * @param args
+     * @param recent
+     * @param protocol
+     * @param cache
+     * @param callHandlers
+     */
+    callMethod<T>(
+        method: string,
+        args: unknown,
+        recent?: boolean,
+        protocol?: number,
+        cache?: ICacheParameters,
+        callHandlers?: ICallChainItem,
+        skipCheckCookie?: boolean,
+        headers?: RPCHeaders
+    ): Promise<T>;
+
+    /**
+     * Отменить активный вызов удаленного метода
+     */
+    abort(): void;
+}
+
+/**
+ * Опции транспорта, реализующего интерфейс IRPC
+ * @public
+ */
+export interface IRpcTransportOptions {
+    /**
+     * Адрес сервиса
+     */
+    serviceUrl: string;
+    /**
+     * Таймаут для вызова
+     */
+    timeout?: number;
+    /**
+     * Обработчики сообщений {@link Types/source:SbisService#callHandlers}
+     */
+    callHandlers?: ICallChainItem;
+}
+
+/**
+ * Интерфейс конструктора транспорта IRPC
+ */
+export type IRpcTransportConstructor = new (options: IRpcTransportOptions) => IRpcTransport;
+
+// Default timeout to produce a call (in seconds)
+const DEFAULT_CALL_TIMEOUT: number = constants.isServerSide ? 5000 : 0;
+
+// Module name with default transport constructor
+const DEFAULT_TRANSPORT_MODULE = 'Browser/Transport';
+
+// Default transport constructor
+let defaultTransportConstructor: IRpcTransportConstructor;
+
+// request unique id property
+const X_UNIQ_HEADER = 'X-UNIQ-ID';
+
+declare const window: Window & {
+    [key in typeof X_UNIQ_HEADER]?: string;
+};
+
+function throwError(err: Error, logger: ILogger): void {
+    logger.info('Types/_source/provider/SbisBusinessLogic', err.message);
+}
+
+/**
+ * Loads default transport implementation.
+ * @param overrided Overrided implementation
+ */
+function getDefaultTransport(
+    overrided: IRpcTransportConstructor
+): IRpcTransportConstructor | Promise<IRpcTransportConstructor> {
+    if (overrided) {
+        return overrided;
+    }
+
+    if (defaultTransportConstructor) {
+        return defaultTransportConstructor;
+    }
+
+    // Go with sync require on server side
+    if (constants.isServerSide) {
+        const { RPCJSON } = requirejs(DEFAULT_TRANSPORT_MODULE);
+        defaultTransportConstructor = RPCJSON;
+        return RPCJSON;
+    }
+
+    // Otherwise go with async require
+    return import(DEFAULT_TRANSPORT_MODULE).then(({ RPCJSON }) => {
+        defaultTransportConstructor = RPCJSON;
+        return RPCJSON;
+    });
+}
+
+/**
+ * Returns promise which rejecting with error if origin doesn't return any result during specified timeout.
+ * @param origin Origin promise
+ * @param timeout Timeout to wait
+ * @param methodName Called method name
+ * @param address Called address
+ * @param logger Logger instance
+ */
+function getTimedOutResponse<T>(
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    origin: Promise<T> | Deferred<T>,
+    timeout: number,
+    methodName: string,
+    address: string,
+    logger: ILogger
+): Promise<T> {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const itsPromise = !(origin as Deferred<T>).isReady;
+    const timeoutError = `Timeout of ${timeout} ms had expired before the method '${methodName}' at '${address}' returned any results`;
+    let timeoutHandler: ReturnType<typeof setTimeout> | undefined;
+
+    // Clear links to timeout and error instance in purpose of disappearing in memory allocation tree.
+    const unallocate = () => {
+        if (timeoutHandler) {
+            clearTimeout(timeoutHandler);
+            timeoutHandler = undefined;
+        }
+    };
+
+    timeoutHandler = setTimeout(() => {
+        throwError(new Error(timeoutError), logger);
+        unallocate();
+    }, timeout);
+
+    if (itsPromise) {
+        return new Promise((resolve, reject) => {
+            origin
+                .then((response) => {
+                    unallocate();
+                    resolve(response);
+                })
+                .catch((err) => {
+                    unallocate();
+                    reject(err);
+                });
+        });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    (origin as Deferred<T>).addCallbacks(
+        (result) => {
+            unallocate();
+            return result;
+        },
+        (err) => {
+            unallocate();
+            return err;
+        }
+    );
+
+    return origin;
+}
+
+/**
+ * JSON-RPC Провайдер для бизнес-логики СБиС
+ * @public
+ */
+export default class SbisBusinessLogic extends OptionsToPropertyMixin implements IAbstract {
+    readonly '[Types/_source/provider/IAbstract]': EntityMarker = true;
+
+    protected _$logger: ILogger = defaultLogger;
+
+    protected _$callTimeout: number = DEFAULT_CALL_TIMEOUT;
+
+    /**
+     * Конечная точка, обеспечивающая доступ клиента к БЛ
+     * @see {@link getEndpoint}
+     * @example
+     * <pre>
+     *     import {provider} from 'Types/source';
+     *
+     *     const dataSource = new provider.SbisBusinessLogic({
+     *         endpoint: {
+     *             address: '/service/url/',
+     *             contract: 'Сотрудник'
+     *         }
+     *     });
+     * </pre>
+     */
+    protected _$endpoint: IEndpoint = {};
+
+    /**
+     * Конструктор сетевого транспорта
+     */
+    protected _$transport: IRpcTransportConstructor;
+
+    /**
+     * Разделитель пространств имен
+     */
+    protected _nameSpaceSeparator: string;
+
+    constructor(options?: IOptions) {
+        super();
+        OptionsToPropertyMixin.initMixin(this, options);
+    }
+
+    /**
+     * Возвращает конечную точку, обеспечивающую доступ клиента к функциональным возможностям БЛ
+     */
+    getEndpoint(): IEndpoint {
+        return this._$endpoint;
+    }
+
+    /**
+     *
+     * @param name
+     * @param args
+     * @param cache
+     * @param _httpMethod
+     * @param callHandlers
+     */
+    call<T>(
+        name: string,
+        args?: unknown[] | object,
+        cache?: ICacheParameters,
+        _httpMethod?: string,
+        callHandlers?: ICallChainItem
+    ): Promise<T> {
+        const invoke = <TInvokeResult>(
+            Transport: IRpcTransportConstructor
+        ): Promise<TInvokeResult> => {
+            const endpoint = this.getEndpoint();
+
+            let methodName = name + '';
+            const contractIncluded = methodName.indexOf(this._nameSpaceSeparator) > -1;
+            if (!contractIncluded && endpoint.contract) {
+                methodName = endpoint.contract + this._nameSpaceSeparator + methodName;
+            }
+
+            const useTimeout = !!this._$callTimeout;
+            const transportOptions: IRpcTransportOptions = {
+                serviceUrl: endpoint.address || '',
+            };
+            if (useTimeout) {
+                transportOptions.timeout = this._$callTimeout;
+            }
+
+            const headers: RPCHeaders = {};
+
+            if (constants.isBrowserPlatform && window[X_UNIQ_HEADER]) {
+                headers[X_UNIQ_HEADER] = window[X_UNIQ_HEADER];
+            }
+
+            let result = new Transport(transportOptions).callMethod<TInvokeResult>(
+                methodName,
+                args || {},
+                undefined,
+                undefined,
+                cache,
+                callHandlers,
+                undefined,
+                headers
+            );
+
+            if (useTimeout) {
+                result = getTimedOutResponse(
+                    result,
+                    this._$callTimeout,
+                    methodName,
+                    endpoint.address || '',
+                    this._$logger
+                );
+            }
+
+            return result;
+        };
+
+        const transport = getDefaultTransport(this._$transport);
+        if (transport instanceof Promise) {
+            return transport.then<T>(invoke);
+        }
+
+        return invoke<T>(transport);
+    }
+}
+
+Object.assign(SbisBusinessLogic.prototype, {
+    '[Types/_source/provider/SbisBusinessLogic]': true,
+    _$transport: null,
+    _nameSpaceSeparator: '.',
+});
