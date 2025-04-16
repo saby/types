@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ui_module name="TypesUnit" id="686f183d-0bcc-4732-b4e4-6016c2a67a12" kaizen_zone="ff0df1f8-7cb6-4309-9a7f-7ba11b54a5" responsible="Буранов А.Р." responsible_uuid="9323a379-618c-46bc-b721-f4f1b046878d">
+   <depends>
+     <module id="686f183d-0bcc-4732-b4e4-6016c2a67a0f" name="Types"/>
+   </depends>
+
+   <load_after/>
+
+    <test environment="NodeJS" />
+
+  <typescript>
+    <arg key="typecheck" value="1"/>
+  </typescript>
+</ui_module>
