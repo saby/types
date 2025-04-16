@@ -1,0 +1,134 @@
+/**
+ * @kaizenZone faaaaa9d-8939-4bca-9a9a-323fbc20ad8b
+ * @module
+ * @public
+ */
+import IPeriodConfiguration from './IConfiguration';
+import 'i18n!controller?';
+import { controller } from 'I18n/i18n';
+import { type FormatName } from '../date';
+
+export class DefaultFullFormats {
+    static oneDay: FormatName[] = ['FULL_DATE_FULL_MONTH'];
+    static daysOneMonth: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+    static daysMonthsOneYear: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+    static daysMonthsYears: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+
+    static oneMonth: FormatName[] = ['FULL_MONTH'];
+    static monthsOneYear: FormatName[] = ['MONTH', 'FULL_MONTH'];
+    static monthsYears: FormatName[] = ['FULL_MONTH', 'FULL_MONTH'];
+
+    static oneQuarter: FormatName[] = ['FULL_QUARTER'];
+    static quartersOneYear: FormatName[] = ['QUARTER', 'FULL_QUARTER'];
+    static get quartersOneYearsTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.manyQuarter;
+    }
+    static quartersYears: FormatName[] = ['FULL_QUARTER', 'FULL_QUARTER'];
+
+    static oneHalfYear: FormatName[] = ['FULL_HALF_YEAR'];
+    static halfYearsYears: FormatName[] = ['FULL_HALF_YEAR', 'FULL_HALF_YEAR'];
+
+    static oneYear: FormatName[] = ['FULL_YEAR'];
+    static years: FormatName[] = ['FULL_YEAR', 'FULL_YEAR'];
+
+    static openStartPeriod: FormatName = 'FULL_DATE_FULL_MONTH';
+    static get openStartPeriodTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.openStartPeriod;
+    }
+
+    static openFinishPeriod: FormatName = 'FULL_DATE_FULL_MONTH';
+    static get openFinishPeriodTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.openFinishPeriod;
+    }
+
+    static get allPeriod(): string {
+        return controller.currentLocaleConfig.calendarEntities.allPeriod;
+    }
+
+    static get today(): string {
+        return controller.currentLocaleConfig.calendarEntities.today;
+    }
+}
+
+export class DefaultShortFormats {
+    static oneDay: FormatName[] = ['FULL_DATE_SHORT_MONTH'];
+    static daysOneMonth: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+    static daysMonthsOneYear: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+    static daysMonthsYears: FormatName[] = ['FULL_DATE', 'FULL_DATE'];
+
+    static oneMonth: FormatName[] = ['SHORT_MONTH'];
+    static monthsOneYear: FormatName[] = ['SHR_MONTH', 'SHORT_MONTH'];
+    static monthsYears: FormatName[] = ['SHORT_MONTH', 'SHORT_MONTH'];
+
+    static oneQuarter: FormatName[] = ['SHORT_QUARTER'];
+    static quartersOneYear: FormatName[] = ['QUARTER', 'SHORT_QUARTER'];
+    static get quartersOneYearsTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.shortQuarter;
+    }
+    static quartersYears: FormatName[] = ['SHORT_QUARTER', 'SHORT_QUARTER'];
+
+    static oneHalfYear: FormatName[] = ['SHORT_HALF_YEAR'];
+    static halfYearsYears: FormatName[] = ['SHORT_HALF_YEAR', 'SHORT_HALF_YEAR'];
+
+    static oneYear: FormatName[] = ['FULL_YEAR'];
+    static years: FormatName[] = ['FULL_YEAR', 'FULL_YEAR'];
+
+    static openStartPeriod: FormatName = 'FULL_DATE_SHORT_MONTH';
+    static get openStartPeriodTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.openStartPeriod;
+    }
+
+    static openFinishPeriod: FormatName = 'FULL_DATE_SHORT_MONTH';
+    static get openFinishPeriodTemplate(): string {
+        return controller.currentLocaleConfig.calendarEntities.openFinishPeriod;
+    }
+
+    static get allPeriod(): string {
+        return controller.currentLocaleConfig.calendarEntities.allPeriod;
+    }
+
+    static get today(): string {
+        return controller.currentLocaleConfig.calendarEntities.today;
+    }
+}
+
+export class DefaultFullWithoutYearFormats extends DefaultFullFormats {
+    static oneDay: FormatName[] = ['SHORT_DATE_FULL_MONTH'];
+
+    static oneMonth: FormatName[] = ['MONTH'];
+    static monthsOneYear: FormatName[] = ['MONTH', 'MONTH'];
+
+    static oneQuarter: FormatName[] = ['ONLY_QUARTER'];
+    static quartersOneYear: FormatName[] = ['QUARTER', 'ONLY_QUARTER'];
+
+    static oneHalfYear: FormatName[] = ['ONLY_HALF_YEAR'];
+
+    static openStartPeriod: FormatName = 'SHORT_DATE_FULL_MONTH';
+
+    static openFinishPeriod: FormatName = 'SHORT_DATE_FULL_MONTH';
+}
+
+export class DefaultShortWithoutYearFormats extends DefaultShortFormats {
+    static oneDay: FormatName[] = ['SHORT_DATE_SHORT_MONTH'];
+
+    static oneMonth: FormatName[] = ['SHR_MONTH'];
+    static monthsOneYear: FormatName[] = ['SHR_MONTH', 'SHR_MONTH'];
+
+    static oneQuarter: FormatName[] = ['ONLY_SHORT_QUARTER'];
+    static quartersOneYear: FormatName[] = ['QUARTER', 'ONLY_SHORT_QUARTER'];
+
+    static oneHalfYear: FormatName[] = ['ONLY_SHORT_HALF_YEAR'];
+
+    static openStartPeriod: FormatName = 'SHORT_DATE_SHORT_MONTH';
+
+    static openFinishPeriod: FormatName = 'SHORT_DATE_SHORT_MONTH';
+}
+
+const Default: IPeriodConfiguration = {
+    full: DefaultFullFormats,
+    short: DefaultShortFormats,
+    fullWithoutYear: DefaultFullWithoutYearFormats,
+    shortWithoutYear: DefaultShortWithoutYearFormats,
+};
+
+export default Default;
